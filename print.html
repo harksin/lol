@@ -218,13 +218,13 @@ Conceptually, it includes the recent vote, log and snapshot tags. Every snapshot
 <p>But how do you access the follower? More precisely, how do you know at least one node in the current membership?</p>
 <p>lol's <code>Gateway</code> tracks the current membership by polling the membership so client can grab at least one node in the cluster. After giving some valid members to the <code>Gateway</code> manually, <code>Gateway</code> automatically tracks the cluster until it is destructed.</p>
 <p><img src="images/gateway.png" alt="" /></p>
-<h1><a class="header" href="#cluster-management-apis" id="cluster-management-apis">Cluster Management APIs</a></h1>
+<h1><a class="header" href="#cluster-management" id="cluster-management">Cluster Management</a></h1>
 <p>In lol adding and removing a server to and from the cluster is just an extension of normal log replication. This means the cluster must have a leader to accept spacial requests: <code>AddServer</code> and <code>RemoveServer</code> which leads to append a special command called <code>ClusterConfiguration</code>.</p>
 <p>When you start a single Raft server, you may think the node automatically form a small cluster with one node and become a leader but this is a wrong assumption because starting a second server will cause <em>split brain</em> where there are two leaders at the same time. This is what Raft's election algorithm tries to avoid by choosing only one leader in a single term.</p>
 <p>You now learned that starting a server does not automatically form a cluster nor give it a leadership. However, this leads to an other problem: How to add servers? Since there is no leader to accept <code>AddServer</code> request.</p>
 <p>When a server received <code>AddServer</code> request and it doesn't belong to any cluster, it forms a cluster with only itself, regardless of the leadership.</p>
 <p><img src="images/cluster-management.png" alt="" /></p>
-<h1><a class="header" href="#the-principle-in-membership-change-single-server-changes" id="the-principle-in-membership-change-single-server-changes">The principle in membership change: single-server changes</a></h1>
+<h1><a class="header" href="#single-server-changes" id="single-server-changes">Single-server changes</a></h1>
 <p>There are two ways to change the cluster membership in Raft: one is by joint concensus algorithm and the another is single-server changes.</p>
 <p>In the initial Raft dissertation in journal, joint consensus algorithm was used to change the membership but later the author found the fault in joint consensus algorithm, and the lastest dissertation uses single-server changes. lol uses this.</p>
 <p>So what is single-server changes? In accordance with the name, this algorithm add or remove only one server at a time.</p>

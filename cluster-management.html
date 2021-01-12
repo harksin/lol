@@ -132,7 +132,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#cluster-management-apis" id="cluster-management-apis">Cluster Management APIs</a></h1>
+                        <h1><a class="header" href="#cluster-management" id="cluster-management">Cluster Management</a></h1>
 <p>In lol adding and removing a server to and from the cluster is just an extension of normal log replication. This means the cluster must have a leader to accept spacial requests: <code>AddServer</code> and <code>RemoveServer</code> which leads to append a special command called <code>ClusterConfiguration</code>.</p>
 <p>When you start a single Raft server, you may think the node automatically form a small cluster with one node and become a leader but this is a wrong assumption because starting a second server will cause <em>split brain</em> where there are two leaders at the same time. This is what Raft's election algorithm tries to avoid by choosing only one leader in a single term.</p>
 <p>You now learned that starting a server does not automatically form a cluster nor give it a leadership. However, this leads to an other problem: How to add servers? Since there is no leader to accept <code>AddServer</code> request.</p>
